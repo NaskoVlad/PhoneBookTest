@@ -38,4 +38,8 @@ public class PhoneBook {
         thread.join();
         return String.valueOf(name);
     }
+
+    public int findByName(){
+        return 0;
+    }
 }

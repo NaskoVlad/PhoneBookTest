@@ -22,7 +22,7 @@ class PhoneBookTest {
     }
 
     @Test
-    void findByNumber() throws InterruptedException {
+    void testFindByNumber() throws InterruptedException {
         PhoneBook phoneBook = new PhoneBook();
         String name = "Елена";
         int phoneNumber = 999;
@@ -30,6 +30,19 @@ class PhoneBookTest {
         phoneBook.add(name, phoneNumber);
 
         String result = phoneBook.findByNumber(phoneNumber);
+
+        Assertions.assertEquals(expected, result);
+    }
+
+    @Test
+    void testFindByName() throws InterruptedException {
+        PhoneBook phoneBook = new PhoneBook();
+        String name = "Елена";
+        int phoneNumber = 999;
+        int expected = 999;
+        phoneBook.add(name, phoneNumber);
+
+        int result = phoneBook.findByName();
 
         Assertions.assertEquals(expected, result);
     }
