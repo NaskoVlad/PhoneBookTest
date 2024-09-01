@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static java.lang.String.*;
+
 public class PhoneBook {
     ConcurrentHashMap<String, Integer> phonebook = new ConcurrentHashMap<>();
 
@@ -23,23 +25,39 @@ public class PhoneBook {
     }
 
     public String findByNumber(int phoneNumber) throws InterruptedException {
-        AtomicReference<String> name = new AtomicReference<>();
+        AtomicReference<String> name1 = new AtomicReference<>("");
         Runnable runnable = () -> {
-            if (phonebook.containsValue(phoneNumber)){
-                for(Map.Entry<String, Integer> item : phonebook.entrySet()){
-                    if(item.getValue().equals(phoneNumber)){
-                        name.set(String.valueOf((item.getKey())));
+            phonebook.searchKeys(10, s -> {
+                if (phonebook.containsValue(phoneNumber)) {
+                    for (Map.Entry<String, Integer> item : phonebook.entrySet()) {
+                        if (item.getValue().equals(phoneNumber)) {
+                            name1.set(valueOf((item.getKey())));
+                        }
                     }
                 }
+                return name1.get();
+            });
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+        thread.join();
+        return name1.get();
+    }
+
+    public int findByName(String name) throws InterruptedException {
+        AtomicInteger result = new AtomicInteger();
+        Runnable runnable = () -> {
+            if (phonebook.containsKey(name)) {
+                result.set(phonebook.get(name));
             }
         };
         Thread thread = new Thread(runnable);
         thread.start();
         thread.join();
-        return String.valueOf(name);
+        return result.get();
     }
 
-    public int findByName(){
-        return 0;
+    public void printAllNames() {
+     
     }
 }
