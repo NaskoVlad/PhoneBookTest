@@ -1,5 +1,6 @@
 package ru.netology;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,7 +23,19 @@ public class PhoneBook {
     }
 
     public String findByNumber(int phoneNumber) throws InterruptedException {
-
-        return null;
+        AtomicReference<String> name = new AtomicReference<>();
+        Runnable runnable = () -> {
+            if (phonebook.containsValue(phoneNumber)){
+                for(Map.Entry<String, Integer> item : phonebook.entrySet()){
+                    if(item.getValue().equals(phoneNumber)){
+                        name.set(String.valueOf((item.getKey())));
+                    }
+                }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+        thread.join();
+        return String.valueOf(name);
     }
 }
