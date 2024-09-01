@@ -61,7 +61,7 @@ class PhoneBookTest {
         phoneBook.add("A", 1);
         phoneBook.printAllNames();
 
-        Assertions.assertEquals("ABC", outputStreamCaptor.toString().trim());
+        Assertions.assertEquals("[A, B, C]", outputStreamCaptor.toString().trim());
 //        String name = "Елена";
 //        int phoneNumber = 999;
 //        int expected = 999;

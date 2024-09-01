@@ -58,6 +58,6 @@ public class PhoneBook {
     }
 
     public void printAllNames() {
-     
+        System.out.println(phonebook.keySet());
     }
 }
