@@ -1,60 +1,36 @@
 package ru.netology;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static java.lang.String.*;
 
 public class PhoneBook {
-    ConcurrentHashMap<String, Integer> phonebook = new ConcurrentHashMap<>();
+    Map<String, Integer> phonebook = new HashMap<>();
 
-    public int add(String name, int phoneNumber) throws InterruptedException {
-        AtomicInteger size = new AtomicInteger();
-        Runnable runnable = () -> {
-            if (!phonebook.containsKey(name)) {
-                phonebook.put(name, phoneNumber);
-            }
-            size.set(phonebook.size());
-        };
-        Thread thread = new Thread(runnable);
-        thread.start();
-        thread.join();
-        return size.get();
+    public int add(String name, int phoneNumber) {
+        if (!phonebook.containsKey(name)) {
+            phonebook.put(name, phoneNumber);
+        }
+        return phonebook.size();
     }
 
-    public String findByNumber(int phoneNumber) throws InterruptedException {
-        AtomicReference<String> name1 = new AtomicReference<>("");
-        Runnable runnable = () -> {
-            phonebook.searchKeys(10, s -> {
-                if (phonebook.containsValue(phoneNumber)) {
-                    for (Map.Entry<String, Integer> item : phonebook.entrySet()) {
-                        if (item.getValue().equals(phoneNumber)) {
-                            name1.set(valueOf((item.getKey())));
-                        }
-                    }
+    public String findByNumber(int phoneNumber) {
+        String name = null;
+        if (phonebook.containsValue(phoneNumber)) {
+            for (Map.Entry<String, Integer> item : phonebook.entrySet()) {
+                if (item.getValue().equals(phoneNumber)) {
+                    name = item.getKey();
                 }
-                return name1.get();
-            });
-        };
-        Thread thread = new Thread(runnable);
-        thread.start();
-        thread.join();
-        return name1.get();
+            }
+        }
+        return name;
     }
 
-    public int findByName(String name) throws InterruptedException {
-        AtomicInteger result = new AtomicInteger();
-        Runnable runnable = () -> {
-            if (phonebook.containsKey(name)) {
-                result.set(phonebook.get(name));
-            }
-        };
-        Thread thread = new Thread(runnable);
-        thread.start();
-        thread.join();
-        return result.get();
+    public int findByName(String name) {
+        int result = 0;
+        if (phonebook.containsKey(name)) {
+            result = phonebook.get(name);
+        }
+        return result;
     }
 
     public void printAllNames() {

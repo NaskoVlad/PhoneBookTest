@@ -27,7 +27,7 @@ class PhoneBookTest {
     }
 
     @Test
-    void testFindByNumber() throws InterruptedException {
+    void testFindByNumber() {
         PhoneBook phoneBook = new PhoneBook();
         String name = "Елена";
         int phoneNumber = 999;
@@ -40,7 +40,7 @@ class PhoneBookTest {
     }
 
     @Test
-    void testFindByName() throws InterruptedException {
+    void testFindByName() {
         PhoneBook phoneBook = new PhoneBook();
         String name = "Елена";
         int phoneNumber = 999;
@@ -53,7 +53,7 @@ class PhoneBookTest {
     }
 
     @Test
-    void testPrintAllNames() throws InterruptedException {
+    void testPrintAllNames() {
         System.setOut(new PrintStream(outputStreamCaptor));
         PhoneBook phoneBook = new PhoneBook();
         phoneBook.add("C", 3);
@@ -62,10 +62,6 @@ class PhoneBookTest {
         phoneBook.printAllNames();
 
         Assertions.assertEquals("[A, B, C]", outputStreamCaptor.toString().trim());
-//        String name = "Елена";
-//        int phoneNumber = 999;
-//        int expected = 999;
-//        phoneBook.add(name, phoneNumber);
     }
 
 }
